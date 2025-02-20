@@ -1,33 +1,32 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
-dotenv.config();
-
-interface AuthenticatedRequest extends Request {
-    user?: any;
+interface JwtPayload {
+  username: string;
 }
 
-const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.header('Authorization');
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Access Denied: No Token Provided' });
-    }
-    
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Access Denied: Invalid Token Format' });
-    }
+export const authenticateToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.headers.authorization;
 
-    jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: 'Forbidden: Invalid Token' });
-        }
-        req.user = user;
-        return next();
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    const secretKey = process.env.JWT_SECRET_KEY || '';
+
+    jwt.verify(token, secretKey, (err, user) => {
+      if (err) {
+        return res.sendStatus(403); // Forbidden
+      }
+
+      req.user = user as JwtPayload;
+      return next();
     });
-    
-    return res.status(500).json({ message: 'Unexpected Error in Authentication Middleware' });
+  } else {
+    res.sendStatus(401); // Unauthorized
+  }
 };
 
-export default authenticateToken;

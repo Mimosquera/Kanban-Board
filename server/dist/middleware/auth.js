@@ -1,22 +1,18 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.header('Authorization');
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Access Denied: No Token Provided' });
+export const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        const secretKey = process.env.JWT_SECRET_KEY || '';
+        jwt.verify(token, secretKey, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // Forbidden
+            }
+            req.user = user;
+            return next();
+        });
     }
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Access Denied: Invalid Token Format' });
+    else {
+        res.sendStatus(401); // Unauthorized
     }
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: 'Forbidden: Invalid Token' });
-        }
-        req.user = user;
-        return next();
-    });
-    return res.status(500).json({ message: 'Unexpected Error in Authentication Middleware' });
 };
-export default authenticateToken;

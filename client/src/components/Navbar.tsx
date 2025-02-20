@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import auth from '../utils/auth';
 
+
 const Navbar = () => {
   const [ loginCheck, setLoginCheck ] = useState(false);
 
@@ -17,7 +18,7 @@ const Navbar = () => {
   }, [loginCheck])
 
   return (
-    <div className='nav'>
+    <div className='nav navbar fixed-top navbar-expand-lg'>
       <div className='nav-title'>
         <Link to='/'>Krazy Kanban Board</Link>
       </div>
@@ -38,6 +39,11 @@ const Navbar = () => {
         )
       }
       </ul>
+      <div className='nav-item'>
+            <button type='button'>
+              <Link to='/create'>Create Ticket</Link>
+            </button>
+      </div>
     </div>
   )
 }
