@@ -5,10 +5,10 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["react", "react-dom", "node"],
+    "types": ["node", "react", "react-dom"],
 
     /* Bundler mode */
-    "moduleResolution": "node", // Changed to 'node' for better compatibility
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -22,6 +22,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["node_modules"], // Added to prevent type conflicts
-  "references": [] // Removed reference to tsconfig.node.json for now
+  "exclude": ["node_modules"]
 }
