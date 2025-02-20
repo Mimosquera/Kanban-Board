@@ -8,7 +8,7 @@
     "types": ["react", "react-dom", "node"],
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Changed to 'node' for better compatibility
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -22,5 +22,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules"], // Added to prevent type conflicts
+  "references": [] // Removed reference to tsconfig.node.json for now
 }
