@@ -48,6 +48,8 @@ This is a **full-stack Kanban board application** that allows users to securely 
      DB_PASSWORD=yourpassword
      DB_HOST=localhost
      JWT_SECRET=your_jwt_secret
+     PORT=10000
+     NODE_ENV=production
      ```
    - Run database migrations:
      ```sh

@@ -9,18 +9,20 @@ import { sequelize } from "./models/index.js";
 import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000; // Use dynamic port for Render
 
 // Enable CORS
-app.use(cors({
-  origin: "http://localhost:3000",
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production" ? "*" : "http://localhost:3000",
   credentials: true,
-}));
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Serves static files in the client's dist folder
-app.use(express.static("../client/dist"));
+if (process.env.NODE_ENV !== "production") {
+  app.use(express.static("../client/dist"));
+}
 
 app.use(routes);
 
