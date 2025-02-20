@@ -5,7 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["./src/types.d.ts"],
+    "types": ["node", "react", "react-dom"],
 
     /* Bundler mode */
     "moduleResolution": "node",
@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/types.d.ts"],  // Ensure TypeScript processes types.d.ts
   "exclude": ["node_modules"]
 }
